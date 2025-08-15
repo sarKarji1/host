@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Messages - Bandaheali Nodes</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<style>
+		body { font-family:Segoe UI, Tahoma, Geneva, Verdana, sans-serif; background:#0b1023; color:#fff; margin:0 }
+		.container { max-width:900px; margin:0 auto; padding:20px }
+		.card { background:rgba(255,255,255,0.06); padding:16px; border-radius:10px; margin-bottom:16px }
+		#messages-container { max-height:60vh; overflow-y:auto; padding:10px; background:rgba(0,0,0,0.2); border-radius:8px }
+		.message { margin:8px 0; padding:10px; border-radius:8px; background:rgba(255,255,255,0.08) }
+		.message.sent { text-align:right; background:rgba(0,188,212,0.2) }
+		.admin-message { border:1px solid #FFC107 }
+		input { width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background:rgba(0,0,0,0.25); color:#fff }
+		button { padding:10px 14px; border:none; border-radius:8px; background:#00bcd4; color:#fff; font-weight:700; cursor:pointer }
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>Messages</h1>
+		<div class="card">
+			<div id="messages-container"></div>
+			<div style="display:flex; gap:8px; margin-top:10px">
+				<input id="message-input" placeholder="Type a message" />
+				<button id="send-message-btn">Send</button>
+			</div>
+		</div>
+	</div>
+	<script src="/js/messages.js"></script>
+</body>
+</html>

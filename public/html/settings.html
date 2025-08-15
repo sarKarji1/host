@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Settings - Bandaheali Nodes</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<style>
+		body { font-family:Segoe UI, Tahoma, Geneva, Verdana, sans-serif; background:#0b1023; color:#fff; margin:0 }
+		.container { max-width:900px; margin:0 auto; padding:20px }
+		.card { background:rgba(255,255,255,0.06); padding:16px; border-radius:10px; margin-bottom:16px }
+		input { width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background:rgba(0,0,0,0.25); color:#fff }
+		button { padding:10px 14px; border:none; border-radius:8px; background:#00bcd4; color:#fff; font-weight:700; cursor:pointer }
+		img { width:80px; height:80px; border-radius:50%; object-fit:cover; display:block; margin-bottom:10px }
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>Settings</h1>
+		<div class="card">
+			<h3>Profile</h3>
+			<img id="profile-pic-preview" src="" alt="Profile" />
+			<input id="profile-pic-upload" type="file" accept="image/*" />
+			<div style="display:grid; gap:10px; grid-template-columns:1fr 1fr; margin-top:10px">
+				<input id="username" placeholder="Username" />
+				<input id="email" placeholder="Email" type="email" />
+				<input id="github-username" placeholder="GitHub Username" />
+				<input id="whatsapp-number" placeholder="WhatsApp Number" />
+			</div>
+			<div style="margin-top:10px"><button id="save-profile-btn">Save Profile</button></div>
+		</div>
+		<div class="card">
+			<h3>Change Password</h3>
+			<form id="change-password-form">
+				<div style="display:grid; gap:10px; grid-template-columns:1fr 1fr 1fr">
+					<input id="current-password" type="password" placeholder="Current Password" />
+					<input id="new-password" type="password" placeholder="New Password" />
+					<input id="confirm-password" type="password" placeholder="Confirm Password" />
+				</div>
+				<div style="margin-top:10px"><button type="submit">Change Password</button></div>
+			</form>
+		</div>
+	</div>
+	<script src="/js/settings.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Login - Bandaheali Nodes</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<style>
+		body { display:flex; align-items:center; justify-content:center; min-height:100vh; background:#0b1023; color:#fff; font-family:Segoe UI, Tahoma, Geneva, Verdana, sans-serif }
+		.card { background:rgba(255,255,255,0.06); padding:24px; border-radius:12px; width:100%; max-width:360px; box-shadow:0 10px 25px rgba(0,0,0,0.25) }
+		.card h1 { margin:0 0 12px 0; font-size:22px }
+		.form-group { margin-bottom:12px }
+		label { display:block; margin-bottom:6px; font-weight:600; color:#c7d2fe }
+		input { width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background:rgba(0,0,0,0.25); color:#fff }
+		button { width:100%; padding:10px; border:none; border-radius:8px; background:#00bcd4; color:#fff; font-weight:700; cursor:pointer }
+		.alt { margin-top:10px; text-align:center }
+		.alt a { color:#9cdcfe; text-decoration:none }
+		.error-message{position:fixed;bottom:20px;right:20px;background:#f44336;color:#fff;padding:8px 12px;border-radius:6px}
+	</style>
+</head>
+<body>
+	<div class="card">
+		<h1>Login</h1>
+		<form id="login-form">
+			<div class="form-group">
+				<label for="login-username">Username or Email</label>
+				<input id="login-username" type="text" required />
+			</div>
+			<div class="form-group">
+				<label for="login-password">Password</label>
+				<input id="login-password" type="password" required />
+			</div>
+			<button type="submit">Login</button>
+		</form>
+		<div class="alt">No account? <a href="/signup">Signup</a></div>
+	</div>
+	<script src="/js/auth.js"></script>
+</body>
+</html>

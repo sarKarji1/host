@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Wallet - Bandaheali Nodes</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<style>
+		body { font-family:Segoe UI, Tahoma, Geneva, Verdana, sans-serif; background:#0b1023; color:#fff; margin:0 }
+		.container { max-width:900px; margin:0 auto; padding:20px }
+		.card { background:rgba(255,255,255,0.06); padding:16px; border-radius:10px; margin-bottom:16px }
+		input { width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background:rgba(0,0,0,0.25); color:#fff }
+		button { padding:10px 14px; border:none; border-radius:8px; background:#00bcd4; color:#fff; font-weight:700; cursor:pointer }
+		.transaction-item { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.1) }
+		.credit{color:#4CAF50} .debit{color:#f44336}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>Wallet</h1>
+		<div class="card">
+			<p>Balance: <strong id="coin-balance">0</strong> coins</p>
+			<button id="claim-coins-btn">Claim Daily 10 Coins</button>
+		</div>
+		<div class="card">
+			<h3>Redeem Voucher</h3>
+			<input id="voucher-code" placeholder="Enter voucher code" />
+			<div style="margin-top:10px"><button id="redeem-voucher-btn">Redeem</button></div>
+		</div>
+		<div class="card">
+			<h3>Recent Transactions</h3>
+			<div id="transactions-list"></div>
+		</div>
+	</div>
+	<script src="/js/wallet.js"></script>
+</body>
+</html>
