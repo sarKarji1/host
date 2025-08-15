@@ -87,6 +87,14 @@ app.get('/admin', (req, res) => {
     });
 });
 
+// Admin login page
+app.get('/admin/login', (req, res) => {
+    const adminLoginPath = path.join(__dirname, 'public/html/admin-login.html');
+    res.sendFile(adminLoginPath, (err) => {
+        if (err) res.status(404).send('Admin login page not found');
+    });
+});
+
 // Start server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
@@ -99,12 +107,10 @@ async function initializeAdmin() {
         const User = require('./models/User');
         let admin = await User.findOne({ username: 'admin' });
         if (!admin) {
-            const bcrypt = require('bcryptjs');
-            const hashedPassword = await bcrypt.hash('admin123', 10);
             await User.create({
                 username: 'admin',
                 email: 'admin@bandaheali.nodes',
-                password: hashedPassword,
+                password: 'admin123',
                 role: 'admin',
                 coins: 1000000
             });
