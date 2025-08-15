@@ -50,6 +50,88 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// Admin login route (username/password, enforces admin role)
+router.post('/admin-login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const user = await User.findOne({ 
+            $or: [{ username }, { email: username }],
+            role: 'admin'
+        });
+        if (!user || !(await user.comparePassword(password))) {
+            return res.status(401).json({ error: 'Invalid admin credentials' });
+        }
+        if (!user.isActive) {
+            return res.status(403).json({ error: 'Admin account suspended' });
+        }
+        const token = jwt.sign(
+            { id: user._id, role: user.role },
+            process.env.JWT_SECRET,
+            { expiresIn: '7d' }
+        );
+        user.lastLogin = new Date();
+        await user.save();
+        res.json({ token });
+    } catch (error) {
+        console.error('Admin login error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Google OAuth: verify Google ID token from client (One Tap or button)
+router.post('/google', async (req, res) => {
+    try {
+        const { idToken } = req.body;
+        if (!idToken) return res.status(400).json({ error: 'Missing Google idToken' });
+
+        // Verify Google token
+        const { OAuth2Client } = require('google-auth-library');
+        const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+        const ticket = await client.verifyIdToken({ idToken, audience: process.env.GOOGLE_CLIENT_ID });
+        const payload = ticket.getPayload();
+        const googleId = payload.sub;
+        const email = payload.email;
+        const name = payload.name;
+        const picture = payload.picture;
+
+        let user = await User.findOne({ $or: [{ googleId }, { email }] });
+        if (!user) {
+            const generatedUsername = (email?.split('@')[0] || `user_${googleId.slice(-6)}`).toLowerCase();
+            // Ensure unique username
+            let uniqueUsername = generatedUsername;
+            let suffix = 1;
+            while (await User.findOne({ username: uniqueUsername })) {
+                uniqueUsername = `${generatedUsername}${suffix++}`;
+            }
+            user = await User.create({
+                username: uniqueUsername,
+                email,
+                authProvider: 'google',
+                googleId,
+                name,
+                profilePic: picture
+            });
+        }
+
+        if (!user.isActive) {
+            return res.status(403).json({ error: 'Account suspended' });
+        }
+
+        const token = jwt.sign(
+            { id: user._id, role: user.role },
+            process.env.JWT_SECRET,
+            { expiresIn: '7d' }
+        );
+        user.lastLogin = new Date();
+        await user.save();
+
+        res.json({ token });
+    } catch (error) {
+        console.error('Google auth error:', error);
+        res.status(401).json({ error: 'Invalid Google token' });
+    }
+});
+
 // Signup route
 router.post('/signup', async (req, res) => {
     try {
@@ -153,5 +235,10 @@ function authenticate(req, res, next) {
         res.status(400).json({ error: 'Invalid token' });
     }
 }
+
+// Expose auth config
+router.get('/config', (req, res) => {
+    res.json({ googleClientId: process.env.GOOGLE_CLIENT_ID || null });
+});
 
 module.exports = router;

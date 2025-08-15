@@ -56,11 +56,59 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Google Sign-In setup
+    setupGoogleSignIn();
+
     function showError(message) {
         const errorElement = document.createElement('div');
         errorElement.className = 'error-message';
         errorElement.textContent = message;
         document.body.appendChild(errorElement);
         setTimeout(() => errorElement.remove(), 3000);
+    }
+
+    async function setupGoogleSignIn() {
+        const googleBtn = document.getElementById('google-btn');
+        if (!googleBtn) return;
+        try {
+            const res = await fetch('/api/auth/config');
+            const { googleClientId } = await res.json();
+            if (!googleClientId) return;
+            if (typeof google === 'undefined' || !google.accounts || !google.accounts.id) return;
+            google.accounts.id.initialize({
+                client_id: googleClientId,
+                callback: async ({ credential }) => {
+                    await handleGoogleCredential(credential);
+                }
+            });
+            google.accounts.id.renderButton(googleBtn, {
+                theme: 'outline',
+                size: 'large',
+                shape: 'pill',
+                width: googleBtn.clientWidth || 240
+            });
+            google.accounts.id.prompt();
+        } catch (e) {
+            // silent
+        }
+    }
+
+    async function handleGoogleCredential(idToken) {
+        try {
+            const response = await fetch('/api/auth/google', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ idToken })
+            });
+            const data = await response.json();
+            if (response.ok) {
+                localStorage.setItem('token', data.token);
+                window.location.href = '/dashboard';
+            } else {
+                showError(data.error || 'Google sign-in failed');
+            }
+        } catch (e) {
+            showError('Network error. Please try again.');
+        }
     }
 });

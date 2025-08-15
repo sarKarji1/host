@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', async function() {
     if (!localStorage.getItem('token')) {
-        window.location.href = '/login';
+        window.location.href = '/admin/login';
         return;
     }
 

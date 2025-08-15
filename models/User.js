@@ -20,8 +20,24 @@ const userSchema = new mongoose.Schema({
     },
     password: { 
         type: String, 
-        required: true,
+        required: function() { return this.authProvider !== 'google'; },
         minlength: 8
+    },
+    authProvider: {
+        type: String,
+        enum: ['local', 'google'],
+        default: 'local'
+    },
+    googleId: {
+        type: String,
+        unique: true,
+        sparse: true,
+        trim: true
+    },
+    name: {
+        type: String,
+        trim: true,
+        maxlength: 80
     },
     profilePic: { 
         type: String, 
